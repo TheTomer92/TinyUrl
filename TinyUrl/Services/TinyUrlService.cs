@@ -13,7 +13,7 @@ namespace TinyUrl.Services
         /// <summary>
         /// Cache used to check if short/long urls exists (both short and long url can be stored as keys).
         /// </summary>
-        private readonly Cache _cache;
+        private readonly LFUCache<UrlMapping> _cache;
 
         /// <summary>
         /// Conqurrent dictionary for request collapsing.
@@ -24,7 +24,7 @@ namespace TinyUrl.Services
         {
             _logger = logger;
             _db = dbService;
-            _cache = new Cache(cacheSize);
+            _cache = new LFUCache<UrlMapping>(cacheSize);
             _ongoingRequests = new ConcurrentDictionary<string, Task<string>>();
         }
 
